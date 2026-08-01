@@ -34,3 +34,5 @@ Linux is an operating system
 Today being 1st of August 2026, i learnt the use of chmod-meaning change mode or permission. So i praticed by creating a file -hello.sh, an had to change the permission of the 
 file by running chmod u+x hello.sh, to excuteable. I noticed when it was initially created the permission was at -rw-r--r--, but now it at -rwxr--r--, which means the user can 
 read, write and excute the file. 
+
+I also learned Git today. 
