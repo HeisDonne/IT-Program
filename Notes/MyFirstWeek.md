@@ -1,38 +1,27 @@
-Linux Basics
+# My First Week - Linux & Git
 
-I learned the basics of Linux
+Today I started my SIWES training.
 
-Linux is an operating system
+At first, Linux felt strange because I was used to clicking around with a mouse. Navigating directories through the terminal was confusing, especially understanding that folders can contain other folders and files.
 
-| Concept | What you've learned       |
-| ------- | ------------------------- |
-| `pwd`   | Where am I?               |
-| `ls`    | What's here?              |
-| `mkdir` | Create a folder           |
-| `cd`    | Move between folders      |
-| `cd ..` | Go up one level           |
-| `cd ~`  | Go home                   |
-| `touch` | Create a file             |
-| `nano`  | Edit a file               |
-| `cat`   | Display a file's contents |
-| `cp`    | Copy and duplcate a file  |
-| `top`   | Show the current traffic  | 
-| `rm`    | Remove a file             |
-| `sudo`  | Runs command as admin     |
-| `grep`  | Search text for a match   |
+One thing that really stood out to me was Linux permissions. Initially, I thought removing write permission would completely stop a file from being edited, but after experimenting, I discovered that GUI editors can sometimes replace a file instead of modifying it directly. That led me to learn the difference between file permissions, directory permissions, and even immutable files using `chattr`.
 
-| Command  | Purpose                            |
-| -------- | ---------------------------------- |
-| `man`    | Opens detailed documentation       |
-| `--help` | Shows quick command help           |
-| `which`  | Shows where a command is installed |
-| `find`   | Searches for files/folders         |
-| `grep`   | Searches inside files              |
-| `apt`    | Installs and manages software      |
+I also learned that Git isn't just a backup tool—it's a way of recording the history of a project. Understanding the flow from Working Directory → Staging Area → Repository made Git much easier to understand.
+
+Things I learned this week:
+- Linux file navigation
+- File and directory management
+- File permissions (`chmod`)
+- Ownership (`chown`, `chgrp`)
+- Searching with `find` and `grep`
+- Installing software with `apt`
+- Git basics
+- Commits
+- Branches
+
+Things I still want to explore:
+- SSH
+- Networking
+- Docker
 
 
-Today being 1st of August 2026, i learnt the use of chmod-meaning change mode or permission. So i praticed by creating a file -hello.sh, an had to change the permission of the 
-file by running chmod u+x hello.sh, to excuteable. I noticed when it was initially created the permission was at -rw-r--r--, but now it at -rwxr--r--, which means the user can 
-read, write and excute the file. 
-
-I also learned Git today. 
