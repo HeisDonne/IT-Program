@@ -1,1 +1,0 @@
- Today i learned new linux commands such as echo, rm, top, cp, head, tail, mv, clear, sudo, grep, |-Pipe, ps, ps aux. And i am excited to master them all without guessing what command to create a file or open a file. 

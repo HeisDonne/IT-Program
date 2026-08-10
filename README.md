@@ -1,6 +1,6 @@
 # HeisDonne
 
-# Hi, I'm Donnel 👋
+# Hi, I'm Donnel 
 
 ## About Me
 
