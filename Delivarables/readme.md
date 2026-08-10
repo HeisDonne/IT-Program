@@ -2,4 +2,4 @@
 
 My personal README is available here:
 
-[README.md](../../README.md)
+[README.md](../README.md)

@@ -2,4 +2,4 @@
 
 This deliverable can be found here:
 
-[Week1/Linux/Cheatsheet.md](../Linux/Cheatsheet.md)
+[Week1/Linux/Cheatsheets.md](../Linux/Cheatsheets.md)
