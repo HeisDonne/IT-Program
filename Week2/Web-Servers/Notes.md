@@ -32,7 +32,8 @@ The web server then sends an HTTP response.
 
 A successful response may be:
 
-```HTTP/1.1 200 OK
+```
+HTTP/1.1 200 OK
 ```
 
 ## What I Learned

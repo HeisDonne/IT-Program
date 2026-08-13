@@ -68,7 +68,8 @@ docker pull nginx
 
 Downloads the Nginx image.
 
-```docker run
+```
+docker run
 ```
 
 Creates and starts a container from an image.

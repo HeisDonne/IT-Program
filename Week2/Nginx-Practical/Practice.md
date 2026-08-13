@@ -11,13 +11,11 @@ I first checked whether Docker was installed.
 ```
 docker --version
 ```
-
-Output confirmed that Docker was installed:
+The output confirmed it was not installed, so i run:
 
 ```
-Docker version 29.7.2
+sudo apt install docker.io -y
 ```
-
 ---
 
 ## 2. Check Docker Service
@@ -28,13 +26,23 @@ I checked whether the Docker service was running.
 sudo systemctl status docker
 ```
 
-The service was active and running.
+The service was not running, so i run:
+
+```
+sudo systemctl start docker
+```
+And enable it at start up:
+
+```
+sudo systemctl enable docker
+```
 
 ## 3. Check Docker Information
 
 I used:
 
-```docker info
+```
+docker info
 ```
 
 This displayed information about the Docker Engine, including the number of containers and images, storage driver, networking, and other configuration details.
@@ -45,13 +53,14 @@ This displayed information about the Docker Engine, including the number of cont
 
 I checked the containers already present on the system.
 
-```docker ps -a
+```
+docker ps -a
 ```
 ## 5. Check Existing Images
 
 I checked the Docker images stored locally.
 
-```bash
+```
 docker images
 ```
 ## 6. Download the Nginx Image
@@ -104,6 +113,11 @@ Host port 8080 → Container port 80
 I opened:
 
 ```
+http://VM_IP:8080
+```
+While on my local pc
+
+```
 http://localhost:8080
 ```
 The Nginx welcome page was displayed.
@@ -115,7 +129,8 @@ This confirmed that the Nginx web server was accessible through the mapped port.
 
 I also tested the web server from the terminal.
 
-```curl -I http://localhost:8080
+```
+curl -I http://localhost:8080
 ```
 
 The response included:
@@ -132,7 +147,7 @@ This confirmed that Nginx successfully received and responded to the HTTP reques
 I checked the Nginx container logs using:
 
 ```
-docker logs week2-nginx
+docker logs IT-nginx
 ```
 
 The logs showed that Nginx started successfully and recorded requests made to the web server.
@@ -140,10 +155,41 @@ The logs showed that Nginx started successfully and recorded requests made to th
 For example:
 
 ```
-"GET / HTTP/1.1" 200 896
+GET / HTTP/1.1" 200 896
 ```
 
 The `200` response showed that the request for the homepage was successful.
+
+## 12. Stop and Start the Nginx container
+
+To stop it:
+```
+sudo docker stop IT-nginx
+```
+Check:
+
+```
+sudo docker ps
+```
+
+To start it:
+
+```
+sudo docker start IT-nginx
+```
+## To remove the container
+```
+sudo docker rm nginx-server
+```
+The Nginx image will still be there 
+check with:
+```
+sudo docker images
+```
+## To remove the images
+```
+sudo docker rmi nginx
+```
 
 ## Result
 

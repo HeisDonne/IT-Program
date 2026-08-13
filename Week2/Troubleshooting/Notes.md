@@ -41,7 +41,7 @@ Look for evidence that can explain the problem.
 For example:
 
 ```
-docker logs week2-nginx
+docker logs IT-nginx
 ```
 
 This can show errors or requests handled by the container.
