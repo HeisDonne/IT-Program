@@ -1,5 +1,5 @@
 An Nginx web server was deployed and tested inside a Docker container.
 
-- [Nginx Practical](../Nginx-Practical/Practice.md)
+[Nginx Practical](../Nginx-Practical/Practice.md)
 
 The practical file contains the commands used to pull the Nginx image, create and run the container, configure port mapping, check the container, test the web server, and view its logs.
