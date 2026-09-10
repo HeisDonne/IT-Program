@@ -194,13 +194,6 @@ def profile():
 
     return jsonify({"id": user.id, "name": user.name, "email": user.email}), 200
 
-
-@auth_bp.route("/logout", methods=["POST"])
-@jwt_required()
-def logout():
-    jti = get_jwt()["jti"]
-    BLOCKLIST.add(jti)
-    return jsonify({"message": "Successfully logged out"}), 200
 ```
 
 ## 7. Issues actually hit while building this, and their fixes
@@ -248,11 +241,6 @@ curl -X POST http://127.0.0.1:5000/login \
 curl http://127.0.0.1:5000/profile \
   -H "Authorization: Bearer <token from login>"
 
-curl -X POST http://127.0.0.1:5000/logout \
-  -H "Authorization: Bearer <token>"
-
-curl http://127.0.0.1:5000/profile \
-  -H "Authorization: Bearer <same token — should now fail>"
 ```
 
 A full Postman collection (`Authentication-API.postman_collection.json`) covering these plus the failure cases — missing fields, weak password, duplicate email, wrong password, missing/invalid token — accompanies this documentation, with automated pass/fail assertions on status codes.

@@ -1,0 +1,258 @@
+{
+  "info": {
+    "name": "Authentication API",
+    "description": "Register, Login, Protected Routes (Week 5 mini project)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://127.0.0.1:5000" },
+    { "key": "access_token", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Register - success",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{base_url}}/register",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\": \"Dev\", \"email\": \"dev@example.com\", \"password\": \"testpass123\"}"
+        }
+      },
+      "event": [{
+        "listen": "test",
+        "script": {
+          "exec": [
+            "pm.test('Status is 201', () => pm.response.to.have.status(201));",
+            "pm.test('Response has id and email', () => {",
+            "    const json = pm.response.json();",
+            "    pm.expect(json).to.have.property('id');",
+            "    pm.expect(json.email).to.eql('dev@example.com');",
+            "});"
+          ]
+        }
+      }]
+    },
+    {
+      "name": "Register - duplicate email",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{base_url}}/register",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\": \"Dev\", \"email\": \"dev@example.com\", \"password\": \"testpass123\"}"
+        }
+      },
+      "event": [{
+        "listen": "test",
+        "script": {
+          "exec": [
+            "pm.test('Status is 409', () => pm.response.to.have.status(409));"
+          ]
+        }
+      }]
+    },
+    {
+      "name": "Register - missing fields",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{base_url}}/register",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"email\": \"nofields@example.com\"}"
+        }
+      },
+      "event": [{
+        "listen": "test",
+        "script": {
+          "exec": [
+            "pm.test('Status is 400', () => pm.response.to.have.status(400));"
+          ]
+        }
+      }]
+    },
+    {
+      "name": "Register - weak password",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{base_url}}/register",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\": \"Weak\", \"email\": \"weak@example.com\", \"password\": \"123\"}"
+        }
+      },
+      "event": [{
+        "listen": "test",
+        "script": {
+          "exec": [
+            "pm.test('Status is 400', () => pm.response.to.have.status(400));"
+          ]
+        }
+      }]
+    },
+    {
+      "name": "Register - empty body",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{base_url}}/register",
+        "body": { "mode": "raw", "raw": "" }
+      },
+      "event": [{
+        "listen": "test",
+        "script": {
+          "exec": [
+            "pm.test('Status is 400', () => pm.response.to.have.status(400));"
+          ]
+        }
+      }]
+    },
+    {
+      "name": "Login - success",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{base_url}}/login",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"email\": \"dev@example.com\", \"password\": \"testpass123\"}"
+        }
+      },
+      "event": [{
+        "listen": "test",
+        "script": {
+          "exec": [
+            "pm.test('Status is 200', () => pm.response.to.have.status(200));",
+            "const json = pm.response.json();",
+            "pm.test('Has access_token', () => pm.expect(json).to.have.property('access_token'));",
+            "pm.collectionVariables.set('access_token', json.access_token);"
+          ]
+        }
+      }]
+    },
+    {
+      "name": "Login - wrong password",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{base_url}}/login",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"email\": \"dev@example.com\", \"password\": \"wrongpassword\"}"
+        }
+      },
+      "event": [{
+        "listen": "test",
+        "script": {
+          "exec": [
+            "pm.test('Status is 401', () => pm.response.to.have.status(401));"
+          ]
+        }
+      }]
+    },
+    {
+      "name": "Login - unknown email",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{base_url}}/login",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"email\": \"nobody@example.com\", \"password\": \"testpass123\"}"
+        }
+      },
+      "event": [{
+        "listen": "test",
+        "script": {
+          "exec": [
+            "pm.test('Status is 401', () => pm.response.to.have.status(401));"
+          ]
+        }
+      }]
+    },
+    {
+      "name": "Profile - valid token",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+        "url": "{{base_url}}/profile"
+      },
+      "event": [{
+        "listen": "test",
+        "script": {
+          "exec": [
+            "pm.test('Status is 200', () => pm.response.to.have.status(200));",
+            "pm.test('Response has email', () => pm.expect(pm.response.json()).to.have.property('email'));"
+          ]
+        }
+      }]
+    },
+    {
+      "name": "Profile - no token",
+      "request": {
+        "method": "GET",
+        "url": "{{base_url}}/profile"
+      },
+      "event": [{
+        "listen": "test",
+        "script": {
+          "exec": [
+            "pm.test('Status is 401', () => pm.response.to.have.status(401));"
+          ]
+        }
+      }]
+    },
+    {
+      "name": "Profile - invalid token",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer not.a.realtoken" }],
+        "url": "{{base_url}}/profile"
+      },
+      "event": [{
+        "listen": "test",
+        "script": {
+          "exec": [
+            "pm.test('Status is 401 or 422', () => pm.expect(pm.response.code).to.be.oneOf([401, 422]));"
+          ]
+        }
+      }]
+    },
+    {
+      "name": "Logout",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+        "url": "{{base_url}}/logout"
+      },
+      "event": [{
+        "listen": "test",
+        "script": {
+          "exec": [
+            "pm.test('Status is 200', () => pm.response.to.have.status(200));"
+          ]
+        }
+      }]
+    },
+    {
+      "name": "Profile - after logout (should fail)",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+        "url": "{{base_url}}/profile"
+      },
+      "event": [{
+        "listen": "test",
+        "script": {
+          "exec": [
+            "pm.test('Status is 401 - token was revoked', () => pm.response.to.have.status(401));"
+          ]
+        }
+      }]
+    }
+  ]
+}
