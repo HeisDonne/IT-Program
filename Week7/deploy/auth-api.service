@@ -1,0 +1,13 @@
+[Unit]
+Description=Authentication API
+After=network.target
+
+[Service]
+User=donne
+WorkingDirectory=/home/donne/auth-api
+Environment="PATH=/home/donne/auth-api/venv/bin"
+ExecStart=/home/donne/auth-api/venv/bin/gunicorn --workers 3 --bind 127.0.0.1:5000 run:app
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
