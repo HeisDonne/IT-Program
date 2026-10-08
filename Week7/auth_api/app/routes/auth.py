@@ -12,6 +12,8 @@ from app.extensions import mail
 from flask import current_app
 
 
+def is_valid_text(value, max_len):
+    return isinstance(value, str) and 0 < len(value.strip()) <= max_len
 
 auth_bp = Blueprint("auth", __name__)
 
@@ -46,6 +48,9 @@ def register():
 
     if len(password) < 6:
         return jsonify({"error": "Password must be at least 6 characters long"}), 400
+
+    if not (is_valid_text(name, 100) and is_valid_text(email, 255) and is_valid_text(password, 72)):
+        return jsonify({"error": "Invalid input"}), 400
 
     existing_user = User.query.filter_by(email=email).first()
     if existing_user:
@@ -144,6 +149,9 @@ def login():
 
     if not user or not bcrypt.check_password_hash(user.password_hash, password):
         return jsonify({"error": "Invalid email or password"}), 401
+
+    if not (is_valid_text(email, 255) and is_valid_text(password, 72)):
+        return jsonify({"error": "Invalid email or password"}), 400
 
     if not user.is_verified:
         return jsonify({"error": "Please verify your email before logging in"}), 403
