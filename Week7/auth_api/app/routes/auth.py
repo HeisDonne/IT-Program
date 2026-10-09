@@ -83,6 +83,9 @@ def resend_otp():
 
     email = data.get("email")
 
+    if not is_valid_text(email, 255):
+            return jsonify({"error": "Invalid input"}), 400
+
     user = User.query.filter_by(email=email).first()
 
     if not user:
@@ -91,8 +94,7 @@ def resend_otp():
     if user.is_verified:
         return jsonify({"message": "Account already verified"}), 200
 
-    if not is_valid_text(email, 255):
-        return jsonify({"error": "Invalid input"}), 400
+    
 
     new_otp = generate_otp()
 
