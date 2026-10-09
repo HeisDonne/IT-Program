@@ -156,11 +156,12 @@ def login():
     if not user or not bcrypt.check_password_hash(user.password_hash, password):
         return jsonify({"error": "Invalid email or password"}), 401
 
-    if not (is_valid_text(email, 255) and is_valid_text(password, 72)):
-        return jsonify({"error": "Invalid email or password"}), 400
 
     if not user.is_verified:
         return jsonify({"error": "Please verify your email before logging in"}), 403
+
+    if not (is_valid_text(email, 255) and is_valid_text(password, 72)):
+            return jsonify({"error": "Invalid email or password"}), 400
 
     access_token = create_access_token(identity=str(user.id))
 
