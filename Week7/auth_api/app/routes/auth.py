@@ -52,6 +52,9 @@ def register():
     if not (is_valid_text(name, 100) and is_valid_text(email, 255) and is_valid_text(password, 72)):
         return jsonify({"error": "Invalid input"}), 400
 
+    if "<" in name or ">" in name:
+        return jsonify({"error": "Invalid input"}), 400
+
     existing_user = User.query.filter_by(email=email).first()
     if existing_user:
         return jsonify({"error": "Email already registered"}), 409
