@@ -12,8 +12,6 @@ from app.extensions import mail
 from flask import current_app
 
 
-def is_valid_text(value, max_len):
-    return isinstance(value, str) and 0 < len(value.strip()) <= max_len
 
 auth_bp = Blueprint("auth", __name__)
 
@@ -49,9 +47,6 @@ def register():
     if len(password) < 6:
         return jsonify({"error": "Password must be at least 6 characters long"}), 400
 
-    if not (is_valid_text(name, 100) and is_valid_text(email, 255) and is_valid_text(password, 72)):
-        return jsonify({"error": "Invalid input"}), 400
-
     existing_user = User.query.filter_by(email=email).first()
     if existing_user:
         return jsonify({"error": "Email already registered"}), 409
@@ -83,9 +78,6 @@ def resend_otp():
 
     email = data.get("email")
 
-    if not (is_valid_text(email, 255) and is_valid_text(email, 255)):
-        return jsonify({"error": "Invalid input"}), 400
-
     user = User.query.filter_by(email=email).first()
 
     if not user:
@@ -115,9 +107,6 @@ def verify_otp():
 
     email = data.get("email")
     otp = data.get("otp")
-
-    if not (is_valid_text(email, 255) and is_valid_text(otp, 6)):
-        return jsonify({"error": "Invalid input"}), 400
 
     user = User.query.filter_by(email=email).first()
 
@@ -150,9 +139,6 @@ def login():
 
     email = data.get("email")
     password = data.get("password")
-
-    if not (is_valid_text(email, 255) and is_valid_text(password, 72)):
-        return jsonify({"error": "Invalid email or password"}), 400
 
     user = User.query.filter_by(email=email).first()
 
