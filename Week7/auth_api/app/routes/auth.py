@@ -116,6 +116,9 @@ def verify_otp():
     email = data.get("email")
     otp = data.get("otp")
 
+    if not (is_valid_text(email, 255) and is_valid_text(otp, 6)):
+            return jsonify({"error": "Invalid input"}), 400
+
     user = User.query.filter_by(email=email).first()
 
     if not user:
@@ -130,8 +133,6 @@ def verify_otp():
     if datetime.utcnow() > user.otp_code_expiration:
         return jsonify({"error": "Verification code expired"}), 400
 
-    if not (is_valid_text(email, 255) and is_valid_text(otp, 6)):
-        return jsonify({"error": "Invalid input"}), 400
 
     user.is_verified = True
     user.otp_code = None
@@ -146,10 +147,17 @@ def verify_otp():
 
 @auth_bp.route("/login", methods=["POST"])
 def login():
-    data = request.get_json()
+    data = request.get_json(silent=True)
+
+    if not data:
+        return jsonify({"error": "Request body must be valid JSON"}), 400
 
     email = data.get("email")
     password = data.get("password")
+
+
+    if not (is_valid_text(email, 255) and is_valid_text(password, 72)):
+                return jsonify({"error": "Invalid email or password"}), 400
 
     user = User.query.filter_by(email=email).first()
 
@@ -160,8 +168,6 @@ def login():
     if not user.is_verified:
         return jsonify({"error": "Please verify your email before logging in"}), 403
 
-    if not (is_valid_text(email, 255) and is_valid_text(password, 72)):
-            return jsonify({"error": "Invalid email or password"}), 400
 
     access_token = create_access_token(identity=str(user.id))
 
