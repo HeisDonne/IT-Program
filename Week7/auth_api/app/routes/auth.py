@@ -12,8 +12,6 @@ from app.extensions import mail
 from flask import current_app
 
 
-def is_valid_text(value, max_len):
-    return isinstance(value, str) and 0 < len(value.strip()) <= max_len
 
 auth_bp = Blueprint("auth", __name__)
 
@@ -49,12 +47,6 @@ def register():
     if len(password) < 6:
         return jsonify({"error": "Password must be at least 6 characters long"}), 400
 
-    if not (is_valid_text(name, 100) and is_valid_text(email, 255) and is_valid_text(password, 72)):
-        return jsonify({"error": "Invalid input"}), 400
-
-    if "<" in name or ">" in name:
-        return jsonify({"error": "Invalid input"}), 400
-
     existing_user = User.query.filter_by(email=email).first()
     if existing_user:
         return jsonify({"error": "Email already registered"}), 409
@@ -86,9 +78,6 @@ def resend_otp():
 
     email = data.get("email")
 
-    if not is_valid_text(email, 255):
-            return jsonify({"error": "Invalid input"}), 400
-
     user = User.query.filter_by(email=email).first()
 
     if not user:
@@ -96,8 +85,6 @@ def resend_otp():
 
     if user.is_verified:
         return jsonify({"message": "Account already verified"}), 200
-
-    
 
     new_otp = generate_otp()
 
@@ -121,9 +108,6 @@ def verify_otp():
     email = data.get("email")
     otp = data.get("otp")
 
-    if not (is_valid_text(email, 255) and is_valid_text(otp, 6)):
-            return jsonify({"error": "Invalid input"}), 400
-
     user = User.query.filter_by(email=email).first()
 
     if not user:
@@ -138,7 +122,6 @@ def verify_otp():
     if datetime.utcnow() > user.otp_code_expiration:
         return jsonify({"error": "Verification code expired"}), 400
 
-
     user.is_verified = True
     user.otp_code = None
     user.otp_code_expiration = None
@@ -152,27 +135,18 @@ def verify_otp():
 
 @auth_bp.route("/login", methods=["POST"])
 def login():
-    data = request.get_json(silent=True)
-
-    if not data:
-        return jsonify({"error": "Request body must be valid JSON"}), 400
+    data = request.get_json()
 
     email = data.get("email")
     password = data.get("password")
-
-
-    if not (is_valid_text(email, 255) and is_valid_text(password, 72)):
-                return jsonify({"error": "Invalid email or password"}), 400
 
     user = User.query.filter_by(email=email).first()
 
     if not user or not bcrypt.check_password_hash(user.password_hash, password):
         return jsonify({"error": "Invalid email or password"}), 401
 
-
     if not user.is_verified:
         return jsonify({"error": "Please verify your email before logging in"}), 403
-
 
     access_token = create_access_token(identity=str(user.id))
 
