@@ -54,7 +54,7 @@ def register():
 
     existing_user = User.query.filter_by(email=email).first()
     if existing_user:
-        return jsonify({"error": "Email already registered"}), 409
+         return jsonify({"message": "If this email can be registered, a verification code has been sent."}), 201
 
     hashed_password = bcrypt.generate_password_hash(password).decode("utf-8")
     otp = generate_otp()
@@ -72,8 +72,7 @@ def register():
 
     send_otp_email(email, otp)
 
-    return jsonify({"message": "Registered. Check your email for a verification code."}), 201
-
+    return jsonify({"message": "If this email can be registered, a verification code has been sent."}), 201
 
 @auth_bp.route("/resend-otp", methods=["POST"])
 def resend_otp():
@@ -88,12 +87,11 @@ def resend_otp():
 
     user = User.query.filter_by(email=email).first()
 
-    if not user:
-        return jsonify({"error": "User not found"}), 404
+    user = User.query.filter_by(email=email).first()
 
-    if user.is_verified:
-        return jsonify({"message": "Account already verified"}), 200
-
+    if not user or user.is_verified:
+         return jsonify({"message": "If this email is registered and unverified, a new code has been sent."}), 200
+    
     new_otp = generate_otp()
 
     user.otp_code = new_otp
