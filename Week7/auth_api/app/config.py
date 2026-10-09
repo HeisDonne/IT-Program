@@ -7,7 +7,7 @@ class Config:
     )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     JWT_SECRET_KEY = os.environ.get("JWT_SECRET_KEY", "dev-jwt-secret")
-    SQLALCHEMY_ENGINE_OPTIONS = {"hide_parameters": True}
+    
 
     MAIL_SERVER = "smtp.gmail.com"
     MAIL_PORT = 587
