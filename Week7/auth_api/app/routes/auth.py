@@ -96,6 +96,7 @@ def resend_otp():
 
     user.otp_code = new_otp
     user.otp_code_expiration = datetime.utcnow() + timedelta(minutes=5)
+    user.otp_attempts = 0  # Reset attempts on new OTP
 
     db.session.commit()
 
