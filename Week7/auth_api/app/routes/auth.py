@@ -11,7 +11,7 @@ from flask_mail import Message
 from app.extensions import mail
 from flask import current_app
 
-
+MAX_OTP_ATTEMPTS = 5
 def is_valid_text(value, max_len):
     return isinstance(value, str) and 0 < len(value.strip()) <= max_len
 
@@ -120,12 +120,17 @@ def verify_otp():
     user = User.query.filter_by(email=email).first()
 
     if not user:
-        return jsonify({"error": "User not found"}), 404
+        return jsonify({"error": "Incorrect verification code"}), 400
 
     if user.is_verified:
         return jsonify({"message": "Account already verified"}), 200
 
+    if user.otp_attempts >= MAX_OTP_ATTEMPTS:
+        return jsonify({"error": "Too many incorrect attempts. Request a new code"}), 429
+
     if otp != user.otp_code:
+        user.otp_attempts += 1
+        db.session.commit()
         return jsonify({"error": "Incorrect verification code"}), 400
 
     if datetime.utcnow() > user.otp_code_expiration:

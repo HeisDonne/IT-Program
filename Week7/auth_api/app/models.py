@@ -10,3 +10,4 @@ class User(db.Model):
     is_verified = db.Column(db.Boolean, default=False)
     otp_code = db.Column(db.String(6), nullable=True)
     otp_code_expiration = db.Column(db.DateTime, nullable=True)
+    otp_attempts = db.Column(db.Integer, nullable=False, default=0, server_default="0")
