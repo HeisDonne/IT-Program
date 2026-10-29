@@ -1,0 +1,3 @@
+curl -s -w "  -> %{http_code}\n" http://10.10.3.102/verify-otp -X POST -H "Content-Type: application/json" -d '{"email":"donnelhandles@gmail.com","otp":"146270"}'
+{"error":"Too many incorrect attempts. Request a new code"}
+  -> 429

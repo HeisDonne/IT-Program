@@ -1,0 +1,13 @@
+HTTP/1.1 400 BAD REQUEST
+Server: nginx
+Date: Fri, 09 Oct 2026 10:39:27 GMT
+Content-Type: application/json
+Content-Length: 38
+Connection: keep-alive
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+Referrer-Policy: no-referrer
+Content-Security-Policy: default-src 'none'; frame-ancestors 'none'
+Cache-Control: no-store
+
+{"error":"Invalid email or password"}

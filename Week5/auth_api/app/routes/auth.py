@@ -1,8 +1,8 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token
-from app.extensions import db, bcrypt
+from app.extensions import db, bcrypt, BLOCKLIST
 from app.models import User
-from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, get_jwt
 
 auth_bp = Blueprint("auth", __name__)
 
@@ -62,3 +62,9 @@ def profile():
 
     return jsonify({"id": user.id, "name": user.name, "email": user.email}), 200
 
+@auth_bp.route("/logout", methods=["POST"])
+@jwt_required()
+def logout():
+    jti = get_jwt()["jti"]
+    BLOCKLIST.add(jti)
+    return jsonify({"message": "Successfully logged out"}), 200

@@ -1,0 +1,13 @@
+HTTP/1.1 401 UNAUTHORIZED
+Server: nginx
+Date: Fri, 09 Oct 2026 10:12:06 GMT
+Content-Type: application/json
+Content-Length: 39
+Connection: keep-alive
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+Referrer-Policy: no-referrer
+Content-Security-Policy: default-src 'none'; frame-ancestors 'none'
+Cache-Control: no-store
+
+{"msg":"Missing Authorization Header"}

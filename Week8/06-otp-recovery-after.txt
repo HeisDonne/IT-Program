@@ -1,0 +1,4 @@
+{"message":"A new verification code has been sent"}
+  -> 200
+{"message":"Account verified successfully"}
+  -> 200

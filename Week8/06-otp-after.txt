@@ -1,0 +1,12 @@
+{"error":"Incorrect verification code"}
+  -> wrong guess 111111: 400
+{"error":"Incorrect verification code"}
+  -> wrong guess 222222: 400
+{"error":"Incorrect verification code"}
+  -> wrong guess 333333: 400
+{"error":"Incorrect verification code"}
+  -> wrong guess 444444: 400
+{"error":"Incorrect verification code"}
+  -> wrong guess 555555: 400
+{"error":"Too many incorrect attempts. Request a new code"}
+  -> correct code: 429

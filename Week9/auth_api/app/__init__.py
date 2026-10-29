@@ -4,6 +4,9 @@ from app.config import Config
 from app.extensions import bcrypt, db, jwt, mail, migrate
 from werkzeug.exceptions import HTTPException
 from app.logging_config import setup_logging
+import os
+from flask import send_from_directory
+from flask_swagger_ui import get_swaggerui_blueprint
 
 
 def create_app():
@@ -30,5 +33,16 @@ def create_app():
         return jsonify({"error": "Internal Server Error"}), 500
 
     setup_logging(app)
+
+    if os.environ.get("ENABLE_DOCS", "false").lower() == "true":
+        docs_dir = os.path.join(os.path.dirname(__file__), "docs")
+
+        @app.route("/openapi.yaml")
+        def openapi_spec():
+            return send_from_directory(docs_dir, "openapi.yaml")
+
+        app.register_blueprint(
+            get_swaggerui_blueprint("/docs", "/openapi.yaml", config={"app_name": "Authentication API"})
+        )
 
     return app

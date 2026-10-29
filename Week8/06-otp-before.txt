@@ -1,0 +1,18 @@
+wrong guess 111111: 400
+wrong guess 222222: 400
+wrong guess 333333: 400
+wrong guess 444444: 400
+wrong guess 555555: 400
+HTTP/1.1 200 OK
+Server: nginx
+Date: Mon, 12 Oct 2026 10:02:57 GMT
+Content-Type: application/json
+Content-Length: 44
+Connection: keep-alive
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+Referrer-Policy: no-referrer
+Content-Security-Policy: default-src 'none'; frame-ancestors 'none'
+Cache-Control: no-store
+
+{"message":"Account verified successfully"}
